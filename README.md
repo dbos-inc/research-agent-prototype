@@ -54,16 +54,15 @@ Create a `.env` file or export in your shell:
 ```bash
 ANTHROPIC_API_KEY=sk-ant-...
 GOOGLE_API_KEY=AIza...
+DBOS_CONDUCTOR_KEY=...
 
 # Optional — omit to use local SQLite
 DBOS_SYSTEM_DATABASE_URL=postgresql://user:password@localhost:5432/dbname
-
-# Connect to DBOS Conductor: get an API key at console.dbos.dev
-DBOS_CONDUCTOR_KEY=...
 ```
 
 - `ANTHROPIC_API_KEY` — get one at [console.anthropic.com](https://console.anthropic.com)
 - `GOOGLE_API_KEY` — get one at [aistudio.google.com](https://aistudio.google.com) (enable the Generative Language API)
+- `DBOS_CONDUCTOR_KEY` = get one at [console.dbos.dev](https://console.dbos.dev/) 
 
 ## Running
 
