@@ -289,8 +289,8 @@ async def deep_research(query: str) -> str:
         agent_status.status = "PENDING_APPROVAL"
         await DBOS.set_event_async(AGENT_STATUS, agent_status)
 
-        # Wait for the user to finish or request more research (up to 1 hour)
-        approval = await DBOS.recv_async(APPROVAL_TOPIC, timeout_seconds=3600)
+        # Wait for the user to finish or request more research (up to 30 days)
+        approval = await DBOS.recv_async(APPROVAL_TOPIC, timeout_seconds=30 * 24 * 3600)
 
         if approval is None or approval.get("action") == "finish":
             agent_status.status = "COMPLETED"

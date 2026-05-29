@@ -1,6 +1,6 @@
 # Research Agent
 
-A durable deep-research agent built with [DBOS](https://dbos.dev), Anthropic Claude, and Google Gemini. Given a research query, it plans a set of web searches, runs them in parallel, and synthesizes the results into a report. The analyzer can request additional searches if the initial results are insufficient. All steps are durable — if the process crashes mid-run, it resumes exactly where it left off.
+A durable deep-research agent built with [DBOS](https://dbos.dev), Anthropic Claude, and Google Gemini. Given a research query, it plans a set of web searches, runs them in parallel, and synthesizes the results into a report. This is followed by a human-in-the-loop approval step. The user can either approve the report or request a follow-on search with the current context. All steps are durable — if the app crashes mid-run, it resumes exactly where it left off.
 
 ## Architecture
 
@@ -50,11 +50,8 @@ GOOGLE_API_KEY=AIza...
 # Optional — omit to use local SQLite
 DBOS_SYSTEM_DATABASE_URL=postgresql://user:password@localhost:5432/dbname
 
-# Optional — for DBOS Cloud
+# Connect to DBOS Conductor: get an API key at console.dbos.dev
 DBOS_CONDUCTOR_KEY=...
-
-# Optional — for Logfire tracing
-LOGFIRE_TOKEN=...
 ```
 
 - `ANTHROPIC_API_KEY` — get one at [console.anthropic.com](https://console.anthropic.com)
@@ -81,7 +78,7 @@ cd frontend && npm run dev
 ## Usage
 
 1. Enter a research query and click **Launch**
-2. The agent plans, searches, and analyzes — progress is shown in real time
+2. The agent plans, searches, and analyzes. It starts and displays search sub-workflows. Click on each search to see its results.
 3. When the report is ready, either:
    - **Finish** — mark the research complete
    - **Research More** — provide an additional prompt to kick off another iteration, building on the existing report
