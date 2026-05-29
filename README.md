@@ -11,6 +11,12 @@ A durable deep-research agent built with [DBOS](https://dbos.dev), Anthropic Cla
 
 All LLM calls are wrapped as DBOS steps (durable, retriable). The orchestration loop is a DBOS workflow (survives crashes and restarts).
 
+## This app showcases the following features of DBOS
+ - **Durability:** you can restart the app at any point and it will resume from where it left off
+ - **Parallelism:** executing multiple search sub-workflows and gathering their results reliably
+ - **Observability:** workflow state is easily accessible from Conductor and the App UI
+ - **Human-in-the-Loop Approval:** workflows waiting for approval persist across restarts.
+
 ## Prerequisites
 
 - Python 3.13+
