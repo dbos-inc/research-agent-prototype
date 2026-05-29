@@ -17,6 +17,8 @@ All LLM calls are wrapped as DBOS steps (durable, retriable). The orchestration 
  - **Observability:** workflow state is easily accessible from Conductor and the App UI
  - **Human-in-the-Loop Approval:** workflows waiting for approval persist across restarts.
 
+You can also use fork() - programmatically or via Conductor - to re-execute whole workflows or sub-workflows on different code versions. This may be useful for debugging and understanding how prompt changes affect behavior.
+
 ## Prerequisites
 
 - Python 3.13+
