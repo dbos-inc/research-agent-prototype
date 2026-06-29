@@ -182,9 +182,8 @@ _ANALYZE_SYSTEM = (
     "Call request_more_searches when there are clear gaps — be specific about what you still need.\n\n"
     "Your report should start with an executive summary, then a concise analysis of the findings. "
     "Include links to original sources whenever possible."
-    #"Your final report must be a brief, one-sentence description of the findings."
+    #"Even though it is called a final report, it must be a very brief, single sentence summary of the answer. No lists, bullet points or paragraphs."
 )
-
 
 @DBOS.step(retries_allowed=True, max_attempts=20)
 async def analyze_step(query: str, search_results: List[str], instructions: str, force_publish: bool = False) -> dict:
