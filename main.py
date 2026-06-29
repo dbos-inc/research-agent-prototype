@@ -98,7 +98,7 @@ async def plan_step(query: str) -> dict:
                     },
                     "web_search_steps": {
                         "type": "array",
-                        "maxItems": 3,
+                        "maxItems": 5,
                         "description": "List of web searches to perform",
                         "items": {
                             "type": "object",
@@ -167,7 +167,7 @@ _REQUEST_MORE_SEARCHES_TOOL = {
         "properties": {
             "search_terms": {
                 "type": "array",
-                "maxItems": 3,
+                "maxItems": 5,
                 "items": {"type": "string"},
                 "description": "Specific search queries needed to fill gaps in the research."
             }
@@ -182,6 +182,7 @@ _ANALYZE_SYSTEM = (
     "Call request_more_searches when there are clear gaps — be specific about what you still need.\n\n"
     "Your report should start with an executive summary, then a concise analysis of the findings. "
     "Include links to original sources whenever possible."
+    #"Your final report must be a brief, one-sentence description of the findings."
 )
 
 
@@ -243,7 +244,7 @@ async def analyze_workflow(query: str, search_results: List[str], instructions: 
         # Fan out additional searches in parallel
         handles: List[WorkflowHandleAsync[str]] = []
         for terms in result["search_terms"]:
-            handle = await DBOS.start_workflow_async(search_workflow, terms)
+            handle = await DBOS.enqueue_workflow_async("fanout_queue", search_workflow, terms)
             handles.append(handle)
         extra = [await h.get_result() for h in handles]
         accumulated.extend(extra)
@@ -273,7 +274,7 @@ async def deep_research(query: str) -> str:
         await DBOS.set_event_async(AGENT_STATUS, agent_status)
         task_handles: List[WorkflowHandleAsync[str]] = []
         for step in plan["web_search_steps"]:
-            handle = await DBOS.start_workflow_async(search_workflow, step["search_terms"])
+            handle = await DBOS.enqueue_workflow_async("fanout_queue", search_workflow, step["search_terms"])
             task_handles.append(handle)
 
         search_results = [await h.get_result() for h in task_handles]
@@ -397,4 +398,5 @@ if __name__ == "__main__":
     }
     DBOS(config=config)
     DBOS.launch()
+    DBOS.register_queue("fanout_queue", worker_concurrency=3)
     uvicorn.run(app, host="0.0.0.0", port=8000, log_config=None)
