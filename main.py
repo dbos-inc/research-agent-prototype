@@ -13,6 +13,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from google import genai
 from google.genai import types
 from pydantic import BaseModel
+from dotenv import load_dotenv
+
+load_dotenv()
+
 
 app = FastAPI()
 app.add_middleware(
